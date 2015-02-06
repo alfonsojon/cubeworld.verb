@@ -1,0 +1,22 @@
+w_metadata cubeworld games \
+    title="Cube World Alpha"
+    publisher="Picroma" \
+    year="2013" \
+    media="download" \
+    file1="CubeSetup3.exe" \
+    installed_exe1="$W_PROGRAMS_X86_WIN/Cube World/CubeLauncher.exe"
+
+
+load_cubeworld()
+{
+	if w_workaround_wine_bug 24416 "installing xact",
+	then
+		w_call xact_jun2010
+	fi
+	w_override_app_dlls Cube.exe native msvcp110 msvcr110 vccorlib110
+	w_call orm=backbuffer
+    w_download https://d1bcl7tdsf48aa.cloudfront.net/download/CubeSetup3.exe
+    cd "$W_CACHE/$W_PACKAGE"
+    $WINE CubeSetup3.exe ${W_OPT_UNATTENDED:+ /VERYSILENT}
+	w_call windowmanagerdecorated=n
+}
